@@ -10,7 +10,16 @@ def test_alembic_migration_head_execution():
     
     # Test upgrading to head on a clean database
     command.upgrade(alembic_cfg, "head")
+
+    # Test downgrading back to base
+    command.downgrade(alembic_cfg, "base")
+
+    # Test re-upgrading to head
+    command.upgrade(alembic_cfg, "head")
     
     # Cleanup temp db
     if os.path.exists("./test_migration_temp.db"):
-        os.remove("./test_migration_temp.db")
+        try:
+            os.remove("./test_migration_temp.db")
+        except OSError:
+            pass

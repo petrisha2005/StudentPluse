@@ -23,6 +23,14 @@ class UserResponse(UserBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+class UserPublicResponse(BaseModel):
+    id: int
+    full_name: str
+    role: UserRole = UserRole.STUDENT
+    profile: Optional[ProfileResponse] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
 class UserWithProfile(UserResponse):
     profile: Optional[ProfileResponse] = None
     skills: List[UserSkillResponse] = []

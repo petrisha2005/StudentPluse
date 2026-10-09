@@ -9,6 +9,7 @@ import { DashboardPage } from '../pages/DashboardPage';
 import { ProfilePage } from '../pages/ProfilePage';
 import { DiscoverPage } from '../pages/DiscoverPage';
 import { TeamsPage } from '../pages/TeamsPage';
+import { TeamDetailPage } from '../pages/TeamDetailPage';
 import { OpportunitiesPage } from '../pages/OpportunitiesPage';
 import { NetworkPage } from '../pages/NetworkPage';
 import { MessagesPage } from '../pages/MessagesPage';
@@ -29,11 +30,13 @@ export const AppRoutes: React.FC = () => {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/teams" element={<TeamsPage />} />
+          <Route path="/teams/:teamId" element={<TeamDetailPage />} />
           <Route path="/opportunities" element={<OpportunitiesPage />} />
           <Route path="/network" element={<NetworkPage />} />
           <Route path="/messages" element={<MessagesPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
         </Route>
+
 
         {/* Catch-all fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -10,6 +10,8 @@ from app.api.skills import router as skills_router
 from app.api.interests import router as interests_router
 from app.api.colleges import router as colleges_router
 from app.api.users import router as users_router
+from app.api.teams import router as teams_router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -46,6 +48,8 @@ app.include_router(skills_router, prefix=f"{settings.API_V1_STR}/skills", tags=[
 app.include_router(interests_router, prefix=f"{settings.API_V1_STR}/interests", tags=["Interests"])
 app.include_router(colleges_router, prefix=f"{settings.API_V1_STR}/colleges", tags=["Colleges"])
 app.include_router(users_router, prefix=f"{settings.API_V1_STR}/users", tags=["Users"])
+app.include_router(teams_router, prefix=f"{settings.API_V1_STR}/teams", tags=["Teams"])
+
 
 @app.get("/")
 def root():

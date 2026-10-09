@@ -17,6 +17,8 @@ class Skill(Base):
     category: Mapped[str] = mapped_column(String(100), nullable=True)
 
     user_skills = relationship("UserSkill", back_populates="skill", cascade="all, delete-orphan")
+    team_requirements = relationship("TeamRequirement", back_populates="skill", cascade="all, delete-orphan")
+
 
 class UserSkill(Base):
     __tablename__ = "user_skills"

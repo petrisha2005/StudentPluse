@@ -36,3 +36,6 @@ class User(Base):
     profile = relationship("Profile", back_populates="user", uselist=False, cascade="all, delete-orphan")
     skills = relationship("UserSkill", back_populates="user", cascade="all, delete-orphan")
     interests = relationship("UserInterest", back_populates="user", cascade="all, delete-orphan")
+    owned_teams = relationship("Team", foreign_keys="Team.owner_id", back_populates="owner", cascade="all, delete-orphan")
+    team_memberships = relationship("TeamMember", back_populates="user", cascade="all, delete-orphan")
+    join_requests = relationship("TeamJoinRequest", back_populates="user", cascade="all, delete-orphan")
