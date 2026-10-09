@@ -25,7 +25,7 @@ export const Navbar: React.FC = () => {
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-lg font-extrabold tracking-tight text-slate-900">CampusCraft</span>
+              <span className="text-lg font-extrabold tracking-tight text-slate-900">StudentPulse</span>
               <span className="hidden sm:inline-block ml-1.5 text-xs font-semibold px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded-full border border-indigo-100">
                 Beta
               </span>

@@ -1,17 +1,19 @@
 # Technical Architecture & System Design Document
 
-## Product: Student Collaboration & Networking Platform (CampusCraft)
+## Product: StudentPulse — Student Collaboration Platform
+
+> **Where students meet, collaborate, and build.**
 
 ---
 
 ## 1. Executive Overview
 
-CampusCraft is designed as a high-scalability student collaboration monorepo. It connects students across universities based on technical skills, academic interests, hackathon objectives, and startup project roles.
+StudentPulse is designed as a high-scalability student collaboration monorepo. It connects students across universities based on technical skills, academic interests, hackathon objectives, and startup project roles.
 
 The application follows a decoupled multi-tier SaaS architecture:
-- **Presentation Layer**: Single Page Application (SPA) built with React 19, TypeScript, and Tailwind CSS.
+- **Presentation Layer**: Single Page Application (SPA) built with React 19, TypeScript, and Tailwind CSS v4.
 - **Application API Layer**: Asynchronous RESTful Web API engineered with FastAPI and Python 3.12.
-- **Persistence Layer**: Relational Database Management System (PostgreSQL / Supabase) managed via SQLAlchemy 2.0 ORM and Alembic migrations.
+- **Persistence Layer**: Relational Database Management System (PostgreSQL / Supabase target, SQLite dev) managed via SQLAlchemy 2.0 ORM and Alembic migrations.
 
 ---
 
@@ -57,14 +59,25 @@ The application follows a decoupled multi-tier SaaS architecture:
 
 ## 3. Security & Authentication Architecture
 
-1. **Password Safety**: Plaintext passwords are never stored or logged. `passlib` / `bcrypt` provides password hashing.
+1. **Password Safety**: Plaintext passwords are never stored or logged. `bcrypt` via `passlib` provides salted password hashing.
 2. **Stateless JWT Authorization**: Upon login/registration, the API returns a signed JWT access token containing the user's ID as the subject claim (`sub`).
 3. **Dependency Injection**: FastAPI `get_current_user` dependency intercepts requests requiring authentication, decodes and verifies the JWT signature, and injects the active database user model.
-4. **CORS Enforcement**: Configured to restrict origin requests to trusted frontend domains (`FRONTEND_URL`).
+4. **Client Token Storage & Security Tradeoffs**: JWT access tokens are stored in `localStorage` for SPA state persistence across browser refreshes.  
+   *Security Note*: `localStorage` does not protect against XSS if malicious scripts execute. For production deployment, XSS prevention via Content Security Policy (CSP) or migration to `HttpOnly` cookies should be considered.
+5. **Logout Mechanism**: Client clears `token` from `localStorage`. JWT token invalidation is client-side in Phase 1.
+6. **Ownership Protection**: `PUT /api/profiles/me` binds updates strictly to the authenticated `current_user` injected via JWT token context. User IDs in request bodies are ignored for profile modification.
 
 ---
 
-## 4. Prepared Future Expansion (Matching Engine & Modules)
+## 4. Migration Architecture
+
+- **Alembic** is the sole source of truth for database schema migrations.
+- Automatic runtime table generation (`Base.metadata.create_all()`) is omitted from FastAPI startup to ensure strict migration control across environments.
+- Migration history is versioned under `backend/alembic/versions/`.
+
+---
+
+## 5. Prepared Future Expansion (Matching Engine & Modules)
 
 The Phase 1 data architecture incorporates normalized relational entities so future modules can be added without database structural overhauls:
 

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 from app.models.user import UserRole
@@ -21,13 +21,11 @@ class UserResponse(UserBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UserWithProfile(UserResponse):
     profile: Optional[ProfileResponse] = None
     skills: List[UserSkillResponse] = []
     interests: List[UserInterestResponse] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

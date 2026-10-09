@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from app.models.skill import ProficiencyLevel
 
@@ -12,8 +12,7 @@ class SkillCreate(SkillBase):
 class SkillResponse(SkillBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UserSkillCreate(BaseModel):
     skill_id: int
@@ -25,5 +24,4 @@ class UserSkillResponse(BaseModel):
     skill: SkillResponse
     proficiency: ProficiencyLevel
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

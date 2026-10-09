@@ -1,5 +1,5 @@
 from typing import Optional, List
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 from app.models.profile import Profile
 from app.models.user import User
 from app.models.college import College
@@ -43,21 +43,21 @@ def update_user_profile(db: Session, user: User, update_data: ProfileUpdate) -> 
         if val is not None:
             setattr(profile, field, val)
 
-    # Update Skills if provided
+    # Update Skills with deduplication
     if update_data.skill_ids is not None:
-        # Clear existing skills
         db.query(UserSkill).filter(UserSkill.user_id == user.id).delete()
-        for s_id in update_data.skill_ids:
+        unique_skill_ids = list(dict.fromkeys(update_data.skill_ids))
+        for s_id in unique_skill_ids:
             skill = db.query(Skill).filter(Skill.id == s_id).first()
             if skill:
                 us = UserSkill(user_id=user.id, skill_id=s_id, proficiency=ProficiencyLevel.INTERMEDIATE)
                 db.add(us)
 
-    # Update Interests if provided
+    # Update Interests with deduplication
     if update_data.interest_ids is not None:
-        # Clear existing interests
         db.query(UserInterest).filter(UserInterest.user_id == user.id).delete()
-        for i_id in update_data.interest_ids:
+        unique_interest_ids = list(dict.fromkeys(update_data.interest_ids))
+        for i_id in unique_interest_ids:
             interest = db.query(Interest).filter(Interest.id == i_id).first()
             if interest:
                 ui = UserInterest(user_id=user.id, interest_id=i_id)

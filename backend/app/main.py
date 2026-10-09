@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.db.session import SessionLocal, engine, Base
+from app.db.session import SessionLocal
 from app.services.metadata_service import seed_initial_metadata
 from app.api.auth import router as auth_router
 from app.api.profiles import router as profiles_router
@@ -13,11 +13,12 @@ from app.api.users import router as users_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Initial table check and metadata seed on startup
-    Base.metadata.create_all(bind=engine)
+    # Seed default metadata on startup without auto-creating tables (Alembic is the schema source of truth)
     db = SessionLocal()
     try:
         seed_initial_metadata(db)
+    except Exception as e:
+        print(f"Metadata seed info: {e}")
     finally:
         db.close()
     yield

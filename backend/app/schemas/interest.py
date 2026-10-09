@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 
 class InterestBase(BaseModel):
@@ -11,8 +11,7 @@ class InterestCreate(InterestBase):
 class InterestResponse(InterestBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UserInterestCreate(BaseModel):
     interest_id: int
@@ -22,5 +21,4 @@ class UserInterestResponse(BaseModel):
     interest_id: int
     interest: InterestResponse
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

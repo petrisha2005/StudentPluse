@@ -45,7 +45,7 @@ export const RegisterPage: React.FC = () => {
           <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center mx-auto shadow-md shadow-indigo-200">
             <Sparkles className="w-6 h-6" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Join CampusCraft</h1>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Join StudentPulse</h1>
           <p className="text-sm text-slate-500">Create your student profile and start collaborating</p>
         </div>
 
